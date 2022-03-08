@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:trainticket_booking_app/forgot_passwordpage.dart';
-import 'package:trainticket_booking_app/profile_page.dart';
-import 'package:trainticket_booking_app/registration_page.dart';
-import 'package:trainticket_booking_app/theme_helper.dart';
+import 'package:trainticket_booking_app/signup/forgot_passwordpage.dart';
+import 'package:trainticket_booking_app/signup/header_design.dart';
+import 'package:trainticket_booking_app/signup/profile_page.dart';
+import 'package:trainticket_booking_app/signup/registration_page.dart';
+import 'package:trainticket_booking_app/signup/theme_helper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:trainticket_booking_app/ticket_booking_home_page.dart';
 class loginscreen extends StatefulWidget {
   const loginscreen({Key? key}) : super(key: key);
 
@@ -14,9 +18,47 @@ class loginscreen extends StatefulWidget {
 
 class _loginscreenState extends State<loginscreen> {
   double _headerHeight = 250;
-  Key _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> formstate = new GlobalKey<FormState>();
+var email,password;
+  signIn() async {
+    var formdata = formstate.currentState;
+if(formdata!.validate()){
+  formdata.save();
+  try {
+    UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email:email,
+        password:password,
+    );
+    return UserCredential;
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found') {
+      AwesomeDialog(
+          context: context,
+          title: "Error",
+          body: Text("No user found for that email"))
+        ..show();
+      print('No user found for that email.');
+    } else if (e.code == 'wrong-password') {
+      AwesomeDialog(
+          context: context,
+          title: "Error",
+          body: Text("Wrong Password"))
+        ..show();
+      print('Wrong password provided for that user.');
+    }
+  }
+
+}else{
+  print('not vaild');
+}
+
+
+
+  }
+
 
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -25,13 +67,7 @@ class _loginscreenState extends State<loginscreen> {
           children: [
             Container(
               height: _headerHeight,
-              child: IconButton(
-                icon: Icon(Icons.compare_arrows_rounded),
-                color: Colors.black,
-                onPressed: () {
-                  print("You Pressed the icon!");
-                },
-              ), //let's create a common header widget
+              child: HeaderWidget(_headerHeight, true, Icons.train_sharp),
             ),
             SafeArea(
               child: Container(
@@ -41,30 +77,51 @@ class _loginscreenState extends State<loginscreen> {
                   child: Column(
                     children: [
                       Text(
-                        'Hello',
-                        style: TextStyle(
-                            fontSize: 60, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Signin into your account',
-                        style: TextStyle(color: Colors.grey),
+                        'Sign in ',
+                        style: TextStyle(color: Colors.black,fontSize: 25),
                       ),
                       SizedBox(height: 30.0),
                       Form(
-                          key: _formKey,
+                          key: formstate,
                           child: Column(
                             children: [
                               Container(
-                                child: TextField(
-                                  decoration: ThemeHelper().textInputDecoration(
-                                      'User Name', 'Enter your user name'),
-                                ),
+
+                                  child: TextFormField(
+                                    onSaved: (val) {
+                                      email  = val;
+                                    },
+                                    validator: (val) {
+                                      if (val!.length > 100) {
+                                        return "FirstName can't to be larger than 100 letter";
+                                      }
+                                      if (val.length < 2) {
+                                        return "FirstName can't to be less than 2 letter";
+                                      }
+                                      return null;
+                                    },
+                                    decoration: ThemeHelper().textInputDecoration(
+                                        'User Name', 'Enter your user name'),
+                                  ),
+
                                 decoration: ThemeHelper()
                                     .inputBoxDecorationShaddow(),
                               ),
                               SizedBox(height: 30.0),
                               Container(
-                                child: TextField(
+                                child: TextFormField(
+                                  onSaved: (val) {
+                                    password = val;
+                                  },
+                                  validator: (val) {
+                                    if (val!.length > 100) {
+                                      return "FirstName can't to be larger than 100 letter";
+                                    }
+                                    if (val.length < 2) {
+                                      return "FirstName can't to be less than 2 letter";
+                                    }
+                                    return null;
+                                  },
                                   obscureText: true,
                                   decoration: ThemeHelper().textInputDecoration(
                                       'Password', 'Enter your password'),
@@ -95,16 +152,25 @@ class _loginscreenState extends State<loginscreen> {
                                   child: Padding(
                                     padding: EdgeInsets.fromLTRB(
                                         40, 10, 40, 10),
-                                    child: Text('Sign In'.toUpperCase(),
-                                      style: TextStyle(fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white),),
+                                    child: InkWell(
+                                      onTap: ()async{
+                          var user=await signIn();
+                               if(user!=null){
+                          Navigator.push(
+                          context,
+                         MaterialPageRoute(
+                          builder: (context) => ticketbookinghomepage()));
+
+                }
+                            },
+                                      child: Text('Sign In'.toUpperCase(),
+                                        style: TextStyle(fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),),
+                                    ),
                                   ),
                                   onPressed: () {
-                                    //After successful login we will redirect to profile page. Let's create profile page now
-                                    Navigator.pushReplacement(context,
-                                        MaterialPageRoute(builder: (context) =>
-                                            profilepage()));
+
                                   },
                                 ),
                               ),

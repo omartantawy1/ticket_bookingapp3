@@ -2,9 +2,10 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 import 'dart:io' as io;
-import 'package:trainticket_booking_app/food_cartmodel.dart';
 
-class DBHelper {
+import 'package:trainticket_booking_app/foodlist/food_cartmodel.dart';
+
+class Foodbhelper {
 
   static Database? _db ;
 
@@ -28,17 +29,17 @@ class DBHelper {
         .execute('CREATE TABLE cart (id INTEGER PRIMARY KEY , productId VARCHAR UNIQUE,productName TEXT,initialPrice INTEGER, productPrice INTEGER , quantity INTEGER, unitTag TEXT , image TEXT )');
   }
 
-  Future<Cart> insert(Cart cart)async{
+  Future<Foodcart> insert(Foodcart cart)async{
     print(cart.toMap());
     var dbClient = await db ;
     await dbClient!.insert('cart', cart.toMap());
     return cart ;
   }
 
-  Future<List<Cart>> getCartList()async{
+  Future<List<Foodcart>> getCartList()async{
     var dbClient = await db ;
     final List<Map<String , Object?>> queryResult =  await dbClient!.query('cart');
-    return queryResult.map((e) => Cart.fromMap(e)).toList();
+    return queryResult.map((e) => Foodcart.fromMap(e)).toList();
 
   }
 
@@ -51,7 +52,7 @@ class DBHelper {
     );
   }
 
-  Future<int> updateQuantity(Cart cart)async{
+  Future<int> updateQuantity(Foodcart cart)async{
     var dbClient = await db ;
     return await dbClient!.update(
         'cart',

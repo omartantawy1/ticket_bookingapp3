@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:trainticket_booking_app/login_screen.dart';
-import 'package:trainticket_booking_app/password_verificationpage.dart';
-import 'package:trainticket_booking_app/theme_helper.dart';
+import 'package:trainticket_booking_app/signup/header_design.dart';
+import 'package:trainticket_booking_app/signup/login_screen.dart';
+import 'package:trainticket_booking_app/signup/password_verificationpage.dart';
+import 'package:trainticket_booking_app/signup/theme_helper.dart';
 class forgotpasswordpage extends StatefulWidget {
   const forgotpasswordpage({Key? key}) : super(key: key);
 
@@ -23,7 +24,7 @@ class _forgotpasswordpageState extends State<forgotpasswordpage> {
             children: [
               Container(
                 height: _headerHeight,
-                child: IconButton(icon: Icon(Icons.password_rounded),onPressed:(){ } ,),
+                child: HeaderWidget(_headerHeight, true, Icons.password_rounded),
               ),
               SafeArea(
                 child: Container(

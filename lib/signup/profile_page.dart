@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:trainticket_booking_app/forgot_passwordpage.dart';
-import 'package:trainticket_booking_app/login_screen.dart';
-import 'package:trainticket_booking_app/registration_page.dart';
+import 'package:trainticket_booking_app/signup/forgot_passwordpage.dart';
+import 'package:trainticket_booking_app/signup/login_screen.dart';
+import 'package:trainticket_booking_app/signup/registration_page.dart';
 class profilepage extends StatefulWidget {
   const profilepage({Key? key}) : super(key: key);
 
@@ -53,93 +53,13 @@ class _profilepageState extends State<profilepage> {
           )
         ],
       ),
-      drawer: Drawer(
-        child: Container(
-          decoration:BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  stops: [0.0, 1.0],
-                  colors: [
-                    Theme.of(context).primaryColor.withOpacity(0.2),
-                    Theme.of(context).accentColor.withOpacity(0.5),
-                  ]
-              )
-          ) ,
-          child: ListView(
-            children: [
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    stops: [0.0, 1.0],
-                    colors: [ Theme.of(context).primaryColor,Theme.of(context).accentColor,],
-                  ),
-                ),
-                child: Container(
-                  alignment: Alignment.bottomLeft,
-                  child: Text("FlutterTutorial.Net",
-                    style: TextStyle(fontSize: 25,color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.screen_lock_landscape_rounded, size: _drawerIconSize, color: Theme.of(context).accentColor,),
-                title: Text('Splash Screen', style: TextStyle(fontSize: 17, color: Theme.of(context).accentColor),),
-                onTap: (){},
-              ),
-              ListTile(
-                leading: Icon(Icons.login_rounded,size: _drawerIconSize,color: Theme.of(context).accentColor),
-                title: Text('Login Page', style: TextStyle(fontSize: _drawerFontSize, color: Theme.of(context).accentColor),
-                ),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => loginscreen()),);
-                },
-              ),
-              Divider(color: Theme.of(context).primaryColor, height: 1,),
-              ListTile(
-                leading: Icon(Icons.person_add_alt_1, size: _drawerIconSize,color: Theme.of(context).accentColor),
-                title: Text('Registration Page',style: TextStyle(fontSize: _drawerFontSize,color: Theme.of(context).accentColor),),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) =>registrationpage()),);
-                },
-              ),
-              Divider(color: Theme.of(context).primaryColor, height: 1,),
-              ListTile(
-                leading: Icon(Icons.password_rounded, size: _drawerIconSize,color: Theme.of(context).accentColor,),
-                title: Text('Forgot Password Page',style: TextStyle(fontSize: _drawerFontSize,color: Theme.of(context).accentColor),),
-                onTap: () {
-                  Navigator.push( context, MaterialPageRoute(builder: (context) => forgotpasswordpage()),);
-                },
-              ),
-              Divider(color: Theme.of(context).primaryColor, height: 1,),
-              ListTile(
-                leading: Icon(Icons.verified_user_sharp, size: _drawerIconSize,color: Theme.of(context).accentColor,),
-                title: Text('Verification Page',style: TextStyle(fontSize: _drawerFontSize,color: Theme.of(context).accentColor),),
-                onTap: () {},
-              ),
-              Divider(color: Theme.of(context).primaryColor, height: 1,),
-              ListTile(
-                leading: Icon(Icons.logout_rounded, size: _drawerIconSize,color: Theme.of(context).accentColor,),
-                title: Text('Logout',style: TextStyle(fontSize: _drawerFontSize,color: Theme.of(context).accentColor),),
-                onTap: () {
-                  SystemNavigator.pop();
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            Container(height: 100, child:  IconButton(
-          icon: Icon(Icons.house_rounded),
-          color: Colors.black,
-          onPressed: () {},
-        ),
+            Container(height: 100,
+
+
+
             ),
             Container(
               alignment: Alignment.center,
@@ -160,10 +80,11 @@ class _profilepageState extends State<profilepage> {
                     child: Icon(Icons.person, size: 80, color: Colors.grey.shade300,),
                   ),
                   SizedBox(height: 20,),
-                  Text('Mr. Donald Trump', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
+                  Text('omar mmmmm', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
                   SizedBox(height: 20,),
-                  Text('Former President', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+
                   SizedBox(height: 10,),
+
                   Container(
                     padding: EdgeInsets.all(10),
                     child: Column(
@@ -204,11 +125,7 @@ class _profilepageState extends State<profilepage> {
                                           title: Text("Email"),
                                           subtitle: Text("donaldtrump@gmail.com"),
                                         ),
-                                        ListTile(
-                                          leading: Icon(Icons.phone),
-                                          title: Text("Phone"),
-                                          subtitle: Text("99--99876-56"),
-                                        ),
+
                                         ListTile(
                                           leading: Icon(Icons.person),
                                           title: Text("About Me"),

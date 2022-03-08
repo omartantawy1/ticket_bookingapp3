@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:trainticket_booking_app/profile_page.dart';
-import 'package:trainticket_booking_app/theme_helper.dart';
+import 'package:trainticket_booking_app/signup/profile_page.dart';
+import 'package:trainticket_booking_app/signup/theme_helper.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 

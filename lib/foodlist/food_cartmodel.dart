@@ -1,4 +1,4 @@
-class Cart {
+class Foodcart {
 
   late final int? id;
   final String? productId;
@@ -9,7 +9,7 @@ class Cart {
   final String? unitTag;
   final String? image;
 
-  Cart({
+  Foodcart({
     required this.id ,
     required this.productId,
     required this.productName,
@@ -20,7 +20,7 @@ class Cart {
     required this.image
   });
 
-  Cart.fromMap(Map<dynamic , dynamic>  res)
+  Foodcart.fromMap(Map<dynamic , dynamic>  res)
       : id = res['id'],
         productId = res["productId"],
         productName = res["productName"],
