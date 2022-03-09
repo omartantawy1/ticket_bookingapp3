@@ -1,19 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:trainticket_booking_app/all_upcomingtrains.dart';
-import 'package:trainticket_booking_app/arrival_station.dart';
-import 'package:trainticket_booking_app/departure_station.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:trainticket_booking_app/emergency_list.dart';
 import 'package:trainticket_booking_app/foodlist/food_list.dart';
-import 'package:trainticket_booking_app/search_arrival.dart';
 import 'package:trainticket_booking_app/signup/login_screen.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:badges/badges.dart';
 import 'package:trainticket_booking_app/signup/profile_page.dart';
 import 'package:trainticket_booking_app/signup/registration_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:trainticket_booking_app/schedule_Item.dart';
+import 'package:trainticket_booking_app/schedule_Item_Container.dart';
+import 'package:trainticket_booking_app/sourceBottomSheet.dart';
+import 'package:trainticket_booking_app/typeBottomSheet.dart';
+import 'booking_train_qr.dart';
 
 class ticketbookinghomepage extends StatefulWidget {
   @override
@@ -31,7 +32,7 @@ class _ticketbookinghomepageState extends State<ticketbookinghomepage> {
     pageController = PageController();
   }
 
-  var valuechoose;
+
 
   @override
 
@@ -42,6 +43,30 @@ class _ticketbookinghomepageState extends State<ticketbookinghomepage> {
     'assets/egypt4.jpg',
     'assets/train.jpg',
     'assets/trainh.jpg',
+
+  ];
+
+  bool visible = false;
+  int numOfVisibleScheduled = 0;
+  var valuechoose;
+  TextEditingController controller1 = TextEditingController();
+  TextEditingController controller2 = TextEditingController();
+  final TextEditingController controller3 = TextEditingController();
+  TextEditingController controller4 = TextEditingController();
+
+
+  schedule_item schedule = schedule_item();
+  TextField departureText = TextField();
+  TextField arriveText = TextField();
+  TextField storeText = TextField();
+  TextField typeText = TextField();
+
+   List destimgs = [
+     'assets/mahtetmasr.png',
+     'assets/f1b7cd1c476609de5c0003d928da7b72.jpg',
+     'assets/download1.jpg',
+     'assets/download3.jpg',
+
   ];
 
   Widget build(BuildContext context) {
@@ -149,7 +174,7 @@ class _ticketbookinghomepageState extends State<ticketbookinghomepage> {
                         children:[
                           Container(
                         width:450,
-                            child: Image.asset(imgs[index],fit: BoxFit.cover,),
+                            child: Image.asset(imgs[index],fit: BoxFit.fill,),
                           ),
                           Container(
                           padding: EdgeInsets.all(16),
@@ -260,7 +285,7 @@ class _ticketbookinghomepageState extends State<ticketbookinghomepage> {
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) =>searcharrival()),);
+
                                     },
                                     child: Text("Drinks",
                                         style: TextStyle(
@@ -339,11 +364,7 @@ class _ticketbookinghomepageState extends State<ticketbookinghomepage> {
                                 Container(
                                   child: TextButton(
                                     onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  upcomingtrains()));
+
                                     },
                                     child: Text("See All",
                                         style: TextStyle(
@@ -548,79 +569,251 @@ class _ticketbookinghomepageState extends State<ticketbookinghomepage> {
                             ],
                           )),
                       Expanded(
-                          flex: 10,
-                          child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  width: 160,
-                                  margin: EdgeInsets.only(right: 8),
-                                  decoration: BoxDecoration(
-                                    color: Color(0xff240e8b),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                );
-                              })),
-                    ],
+         flex:9,
+             child: ListView.builder(
+             scrollDirection: Axis.horizontal,
+          itemCount: destimgs.length, itemBuilder: (context, index) {
+              return Container(
+               width: 180,
+        height: 150,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Card(
+          child: Container(
+            child: Image.asset(destimgs[index],fit:BoxFit.fill,)
+              ),
+          ),
+
+      );
+           }),
+                      )],
                   ),
                 ),
               ],
             ),
           ),
+
           Scaffold(
             backgroundColor: Colors.grey[300],
             appBar: AppBar(
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ticketbookinghomepage()));
-                },
-              ),
-              backgroundColor: Color(0xff240e8b),
-              title: Text('Search By Station'),
-              centerTitle: true,
-            ),
-            body: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                      width: 150,
-                      padding: EdgeInsets.all(10.0),
-                      child: TextField(
-                          autocorrect: true,
-                          decoration: InputDecoration(
-                            hintText: 'Source',
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red),
-                            ),
-                            focusedBorder: UnderlineInputBorder(),
-                          ))),
-                  IconButton(
-                    icon: Icon(Icons.compare_arrows_rounded),
-                    color: Colors.black,
-                    onPressed: () {
-                      print("You Pressed the icon!");
-                    },
+                leading: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ticketbookinghomepage()));
+                  },
+                ),
+                backgroundColor: Color(0xff240e8b),
+                title: Text('Search By Station'),
+                centerTitle: true,
+                actions: <Widget>[
+                  PopupMenuButton(
+                    // add icon, by default "3 dot" icon
+                      icon: Icon(Icons.circle_notifications),
+                      itemBuilder: (context){
+                        return [
+                          PopupMenuItem<int>(
+                            value: 0,
+                            child:shedule_Item_Container(depart1: controller1.text,arrive1:controller2.text,type1: controller3.text,visible1: true),
+                          ),
+
+                        ];
+                      },
+                      onSelected:(value){
+                        if(value == 0){
+                          MaterialPageRoute(
+                              builder: (context) => booking_train_qr());
+                        }
+                      }
                   ),
-                  Container(
-                      width: 150,
-                      padding: EdgeInsets.all(10.0),
-                      child: TextField(
-                          autocorrect: true,
-                          decoration: InputDecoration(
-                            hintText: 'Destination',
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red),
+                ]
+            ),
+            body: ListView(
+              children: [
+                Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        Text('Departure Station'),
+                        Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                            focusedBorder: UnderlineInputBorder(),
-                          ))),
-                ],
-              ),
+                            child: departureText = TextField(
+                              controller: controller1,
+                              autocorrect: true,
+                              decoration: InputDecoration(
+                                  labelText: '-Select Station',
+                                  floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  suffixIcon: InkWell(
+                                    onTap: () {
+                                      showSourceBottomSheet(
+                                          context, controller1);
+                                      setState(() {
+                                        // controller.text= bs.value;
+                                      });
+                                    },
+                                    child: Icon(
+                                      Icons.arrow_drop_down_circle_outlined,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(30)))),
+                            ))
+                      ],
+                    )),
+                SizedBox(height: 2),
+                IconButton(
+                  icon: Icon(Icons.wifi_protected_setup_rounded),
+                  color: Colors.black,
+                  onPressed: () {
+                    setState(() {
+                      if(departureText==departureText&&arriveText==arriveText){
+                        storeText=departureText;
+                        departureText=arriveText;
+                        arriveText=storeText;
+                        controller4=controller1;
+                        controller1=controller2;
+                        controller2=controller4;
+
+                      }
+                    });
+                  },
+                ),
+                SizedBox(height: 2),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Text('ِِِArrival Station'),
+                      Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: arriveText = TextField(
+                            controller: controller2,
+                            autocorrect: true,
+                            decoration: InputDecoration(
+                                labelText: '-Select Station',
+                                floatingLabelBehavior:
+                                FloatingLabelBehavior.never,
+                                filled: true,
+                                fillColor: Colors.white,
+                                suffixIcon: InkWell(
+                                  onTap: () {
+                                    showDestinationBottomSheet(
+                                        context, controller2);
+                                    setState(() {
+                                      //  controller.text= bs.value;
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.arrow_drop_down_circle_outlined,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(30)))),
+                          ))
+                    ],
+                  ),
+                ),
+                SizedBox(height: 5),
+
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      Text('ِِِTrain Type'),
+                      Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: typeText = TextField(
+                            controller: controller3,
+                            autocorrect: true,
+                            decoration: InputDecoration(
+                                labelText: '-Select type',
+                                floatingLabelBehavior:
+                                FloatingLabelBehavior.never,
+                                filled: true,
+                                fillColor: Colors.white,
+                                suffixIcon: InkWell(
+                                  onTap: () {
+                                    showTypeBottomSheet(
+                                        context, controller3);
+
+                                    setState(() {
+                                      //  controller.text= bs.value;
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.arrow_drop_down_circle_outlined,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(30)))),
+                          ))
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  child: SizedBox(
+                    height: 80,
+                    width: 10,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                          MaterialStateProperty.all(Colors.amberAccent),
+                          padding:
+                          MaterialStateProperty.all(EdgeInsets.all(15)),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(600)))),
+                      onPressed: () {
+                        if (numOfVisibleScheduled == 0) {
+                          visible = true;
+                          setState(() {
+                            schedule = schedule_item(
+                                depart: controller1.text,
+                                arrive: controller2.text,
+                                type: controller3.text,
+                                visible: true);
+                          });
+                        }
+                      },
+                      child: Icon(
+                        Icons.train,
+                        color: Colors.deepPurple,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                schedule,
+              ],
             ),
           ),
 
@@ -710,4 +903,37 @@ class _ticketbookinghomepageState extends State<ticketbookinghomepage> {
           ]),
     );
   }
+}
+void showSourceBottomSheet(BuildContext context, TextEditingController _cont) {
+  sourceBottomSheet bs = sourceBottomSheet(_cont);
+  //bs.sourceBottomSheet1(_cont);
+  showModalBottomSheet(
+      context: context,
+      builder: (buildContext) {
+        return bs;
+        //    return sourceBottomSheet();
+      });
+}
+
+void showDestinationBottomSheet(
+    BuildContext context, TextEditingController _cont) {
+  sourceBottomSheet bs = sourceBottomSheet(_cont);
+  //bs.sourceBottomSheet1(_cont);
+  showModalBottomSheet(
+      context: context,
+      builder: (buildContext) {
+        return bs;
+        //    return sourceBottomSheet();
+      });
+}
+void showTypeBottomSheet(
+    BuildContext context, TextEditingController _cont) {
+  typeBottomSheet bs = typeBottomSheet(_cont);
+  //bs.sourceBottomSheet1(_cont);
+  showModalBottomSheet(
+      context: context,
+      builder: (buildContext) {
+        return bs;
+        //    return sourceBottomSheet();
+      });
 }
